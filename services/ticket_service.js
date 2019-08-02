@@ -9,7 +9,14 @@ const getTickets = () => {
 }
 
 // get Tickets async
-const getTicketsAsync = (callback) => {
+const getTicketsAsync = (callback, filter, page, limit, sortby, orderby) => {
+    var query = '?';
+    if (filter) { query += 'filter=' + filter + '&' }
+    if (page) { query += 'p=' + page + '&'; }
+    if (limit) { query += 'l=' + limit + '&'; }
+    if (sortby) { query += 'sortby=' + sortby + '&'; }
+    if (orderby) { query += 'orderby=' + orderby }
+    url_ticket += query.length > 1 ? query : '';
     let xhr = new XMLHttpRequest;
     xhr.open('GET', url_ticket, true)
     xhr.onload = function () {
@@ -108,7 +115,7 @@ var ticket_json = `{
   }`
 
 const ticket_obj = {
-    id: 1, 
+    id: 1,
     ownerId: 5,
     assigneeId: 3,
     priority: "priority 1",
