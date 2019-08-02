@@ -7,7 +7,7 @@ const getUsers = () => {
     xhr.send();
     return JSON.parse(xhr.responseText);
 }
-
+ 
 // get users async
 const getUsersAsync = (callback) => {
     let xhr = new XMLHttpRequest;
