@@ -29,7 +29,7 @@ const getUser = (id) => {
 // get a user
 const getUserByUsername = (username) => {
     let xhr = new XMLHttpRequest;
-    xhr.open('GET', url_user + '?filter=' + username, false)
+    xhr.open('GET', url_user + '?search=' + username, false)
     xhr.send();
     return JSON.parse(xhr.responseText);
 }

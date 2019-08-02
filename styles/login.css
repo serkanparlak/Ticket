@@ -1,0 +1,7 @@
+body{
+    background-image: url("../img/backgroung1.png");
+    background-repeat: no-repeat;
+    background-position-x: 100px;
+    background-position-y: -1400px;
+    background-size: 135%;
+}
