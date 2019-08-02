@@ -1,70 +1,52 @@
-var urls = [
-    "../services/user_service.js",
-    "../services/ticket_service.js"
-    , "../services/comment_service.js"
-];
-function loadScript(urls, callback) {
+const ticketsOnload = (tickets) => {
     Notiflix.Loading.Standard('Loading...');
-    urls.forEach((url, index) => {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = url;
-        script.onload = () => {
-            if (urls.length - 1 == index) {
-                setTimeout(() => {
-                    callback()
-                }, 0);
+    var tbody = document.getElementById('ticket_list_tbody');
+    tickets.forEach((ticket, index) => {
+        var tr = document.createElement('tr');
+        // tr.setAttribute('t_id', ticket.id);
+        tr.addEventListener('click', () => { ticketClick(ticket.id) });
+        tr.setAttribute('style', 'cursor:pointer')
+        // if (index % 2 == 0) {
+        //     tr.setAttribute('class', 'table-active');
+        // }
+        var td = document.createElement('td');
+        td.textContent = ticket.subject;
+        tr.appendChild(td);
+        var td2 = document.createElement('td');
+        getUserAsync(ticket.ownerId, user => td2.textContent = user.username);
+        tr.appendChild(td2);
+        var td3 = document.createElement('td');
+        td3.textContent = formatDate(ticket.date);
+        tr.appendChild(td3);
+        var td4 = document.createElement('td');
+        getUserAsync(ticket.assigneeId, user => {
+            td4.textContent = user.username;
+            if (index + 1 == tickets.length) {
+                Notiflix.Loading.Remove();
             }
+        });
+        tr.appendChild(td4);
+        var td5 = document.createElement('td');
+        var priority_span = document.createElement('span');
+        priority_span.textContent = ticket.priority;
+        if (ticket.priority == 'Low') {
+            priority_span.setAttribute('class', 'badge badge-pill badge-dark');
+        } else if (ticket.priority == 'High') {
+            priority_span.setAttribute('class', 'badge badge-pill badge-danger');
+        } else {
+            priority_span.setAttribute('class', 'badge badge-pill badge-info');
         }
-        document.head.appendChild(script);
+        td5.appendChild(priority_span);
+        tr.appendChild(td5);
+        tbody.appendChild(tr);
     });
 }
-
-loadScript(urls, () => {
-    getTicketsAsync((tickets) => {
-        var tbody = document.getElementById('ticket_list_tbody');
-        tickets.forEach((ticket, index) => {
-            var tr = document.createElement('tr');
-            // tr.setAttribute('t_id', ticket.id);
-            tr.addEventListener('click', () => { ticketClick(ticket.id) });
-            tr.setAttribute('style', 'cursor:pointer')
-            // if (index % 2 == 0) {
-            //     tr.setAttribute('class', 'table-active');
-            // }
-            var td = document.createElement('td');
-            td.textContent = ticket.subject;
-            tr.appendChild(td);
-            var td2 = document.createElement('td');
-            getUserAsync(ticket.ownerId, user => td2.textContent = user.username);
-            tr.appendChild(td2);
-            var td3 = document.createElement('td');
-            td3.textContent = formatDate(ticket.date);
-            tr.appendChild(td3);
-            var td4 = document.createElement('td');
-            getUserAsync(ticket.assigneeId, user => {
-                td4.textContent = user.username;
-                if (index + 1 == tickets.length) {
-                    Notiflix.Loading.Remove();
-                }
-            });
-            tr.appendChild(td4);
-            var td5 = document.createElement('td');
-            var priority_span = document.createElement('span');
-            priority_span.textContent = ticket.priority;
-            if(ticket.priority == 'Low'){
-                priority_span.setAttribute('class','badge badge-pill badge-dark');
-            }else if(ticket.priority == 'High'){
-                priority_span.setAttribute('class','badge badge-pill badge-danger');
-            }else{
-                priority_span.setAttribute('class','badge badge-pill badge-info');
-            }
-            td5.appendChild(priority_span);
-            tr.appendChild(td5);
-            tbody.appendChild(tr);
-        });
-    })
-
-});
+var filter;//aranacak ifade
+var page;
+var pageLength = 10;
+var sortBy;//sütun adı
+var orderBy;//asc,desc
+getTicketsAsync(ticketsOnload, filter, page, pageLength, sortBy, orderBy)
 
 function formatDate(dt) {
     date = new Date(dt)
@@ -81,7 +63,6 @@ function formatDate(dt) {
 
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
 }
-
 ticketClick = (id) => {
     location.href = 'file:///home/sparlak/Projects/Angular/TicketDeneme/pages/login.html';
 }

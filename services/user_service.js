@@ -26,6 +26,14 @@ const getUser = (id) => {
     return JSON.parse(xhr.responseText);
 }
 
+// get a user
+const getUserByUsername = (username) => {
+    let xhr = new XMLHttpRequest;
+    xhr.open('GET', url_user + '?filter=' + username, false)
+    xhr.send();
+    return JSON.parse(xhr.responseText);
+}
+
 // get a user async
 const getUserAsync = (id, callback) => {
     let xhr = new XMLHttpRequest;
