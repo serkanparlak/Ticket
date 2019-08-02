@@ -65,7 +65,6 @@ loadScript(urls, () => {
     })
 
 });
-
 function formatDate(dt) {
     date = new Date(dt)
     var monthNames = [
@@ -81,7 +80,6 @@ function formatDate(dt) {
 
     return day + ' ' + monthNames[monthIndex] + ' ' + year;
 }
-
 ticketClick = (id) => {
     location.href = 'file:///home/sparlak/Projects/Angular/TicketDeneme/pages/login.html';
 }
