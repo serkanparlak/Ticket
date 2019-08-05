@@ -16,20 +16,25 @@ function loginButtonPressed()
 
 
  function login(uname,pword){
-    var data = getUsers()
+    var data = getUserByUsername(uname)
     
-    data.forEach(user => {
+    for(user of data) {
         
         if(user.username == uname && user.password == pword){
             
             console.log('successfull login ' + user.username)
-            debugger
-            return false
             
+            //for session storage
+            //var storageData = [{'id':user.id, 'username': user.username}]
+            var storageData = [user.id,user.username]
+            sessionStorage.setItem('dataStored',storageData)
+            location.href = '../pages/ticket-list.html'
+            return user.username
         }
-    })
+    }
     alert('Your username or password are incorrect...')
      
+    
  }
  
 
