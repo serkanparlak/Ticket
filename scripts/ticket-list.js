@@ -79,7 +79,6 @@ const ticketListLoad = (filterKey, sortBy) => {
 /**
  * sayfa ilk yüklendiğindeki datayı doldurur
  */
-Notiflix.Loading.Standard('Loading...');
 getUsersAsync(users => {
     allUsers = users;
     getCommentsAsync(comments => {
@@ -89,7 +88,6 @@ getUsersAsync(users => {
             allTickets = tickets;
             allTickets.sort((a, b) => (a.date < b.date) ? 1 : -1);
             ticketListLoad();
-            Notiflix.Loading.Remove();
         });
     });
 });
